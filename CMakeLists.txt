@@ -10,15 +10,16 @@ find_package(Boost COMPONENTS unit_test_framework REQUIRED)
 
 configure_file(version.h.in version.h)
 
-set(project_sources
-   main.cpp
-   ip_filter.cpp
-)
 add_executable(lesson_cli
-  ${project_sources}
+    main.cpp
 )
 
-add_library(lesson lib.cpp)
+set(project_sources
+    lib.cpp
+    ip_filter.cpp
+    )
+add_library(lesson ${project_sources} )
+
 add_executable(test_version test_version.cpp)
 
 set_target_properties(lesson_cli lesson test_version PROPERTIES
