@@ -44,7 +44,7 @@ int main()
 			cout << "Invalid string format." << endl;
 			cout << "Example: text1 \t text2 \t text3 \n" << endl;
 		}
-
+	}
 
 
 	ipFilter.SortAddresses();
