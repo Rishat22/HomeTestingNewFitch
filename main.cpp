@@ -1,6 +1,8 @@
 #include <iostream>
 #include "ip_filter.h"
 #include "lib.h"
+#include <fstream>
+#include <string>
 
 using namespace std;
 using namespace IpFiltration;
@@ -20,44 +22,56 @@ void PrintAddressList(const std::list<std::vector<u_int8_t>>& ipAddressList)
 	}
 }
 
-int main()
+void SecondPart()
 {
-	std::cout << "build " << version() << std::endl;
-	cout << "Hello World!" << endl;
-
-	cout << "Part 2. Filtering IP addresses." << endl;
-	cout << "Enter 'end' to end the input." << endl;
+	std::string inputData;
 	IpFilter ipFilter;
-	while (true)
+	while(std::getline(std::cin, inputData))  //input from the file in.txt
 	{
-		std::string inputData;
-		getline(cin, inputData);
+		auto bRes = ipFilter.AddIpAddress(inputData);
+
 		if(inputData == "end")
 		{
 			break;
 		}
-
-		auto bRes = ipFilter.AddIpAddress(inputData);
-
 		if(!bRes)
 		{
 			cout << "Invalid string format." << endl;
 			cout << "Example: text1 \t text2 \t text3 \n" << endl;
 		}
 	}
-
-
 	ipFilter.SortAddresses();
 	PrintAddressList(ipFilter.GetOriginalList());
 
+	ipFilter.ClearFilterParameters();
 	ipFilter.AddFilterParameter(0, 1);
 	PrintAddressList(ipFilter.GetFilteredList());
 
-	ipFilter.AddFilterParameter(46, 70);
+	ipFilter.ClearFilterParameters();
+	ipFilter.AddFilterParameter(0, 46);
+	ipFilter.AddFilterParameter(1, 70);
 	PrintAddressList(ipFilter.GetFilteredList());
 
+	ipFilter.ClearFilterParameters();
 	ipFilter.AddFilterParameter(46);
 	PrintAddressList(ipFilter.GetFilteredList());
+}
+
+int main()
+{
+
+	std::cout << "build " << version() << std::endl;
+	cout << "Hello World!" << endl;
+
+	cout << "Part 2. Filtering IP addresses." << endl;
+	cout << "Enter 'end' to end the input." << endl;
+
+
+	/* if you want reed from file */
+//	std::ifstream in("ip_filter.tsv");
+//	std::cin.rdbuf(in.rdbuf());
+
+	SecondPart();
 
 	return 0;
 }
