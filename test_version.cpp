@@ -62,7 +62,7 @@ BOOST_AUTO_TEST_CASE(test_check_sortList)
 		{200, 100, 1, 1},
 		{192, 168, 1, 0},
 		{1, 1, 1, 1},
-		{0, 0, 0, 1}
+		{0, 0, 0, 0}
 
 	};
 	ipFilter.SortAddresses();
