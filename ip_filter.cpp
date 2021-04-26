@@ -91,7 +91,7 @@ void IpFilter::FilterListByParams()
 	for(const auto& ipAddress : m_ipAddressList)
 	{
 		auto findAddress = true;
-		for(const auto filterParameter : m_FilterParameters)
+		for(const auto& filterParameter : m_FilterParameters)
 		{
 			if(ipAddress[filterParameter.first] != filterParameter.second)
 			{
