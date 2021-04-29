@@ -10,34 +10,31 @@ namespace IpFiltration
 const size_t ADDRESS_PARTS_SIZE = 4;
 const size_t ADDRESS_WITH_OTHERDATA_PARTS_SIZE = 3;
 
-enum IpAddressFilterType
-{
-	DefaultFiltration,
-	FiltrationBySelectedBytes,
-};
-
+using IpAddress = std::vector<u_int8_t>;
+using IpAddressList = std::list<IpAddress>;
 
 class IpFilter
 {
 public:
 	IpFilter() = default;
     bool AddIpAddress(const std::string& ipAddressWithOtherData);
-	std::list<std::vector<u_int8_t>> GetOriginalList() const;
+	IpAddressList GetOriginalList() const;
 	void AddFilterParameter(const u_int8_t partNumberAddress, const u_int8_t filterValue);
 	void AddFilterParameter(const u_int8_t filterValue);
 	void ClearFilterParameters();
-	std::list<std::vector<u_int8_t>> GetFilteredList() const;
+	IpAddressList GetFilteredList() const;
 	void SortAddresses();
 
 private:
 	void FilterListBySubString(const u_int8_t filterValue);
 	void FilterListByParams();
 	std::vector<std::string> Split(const std::string& str, char delimiter);
-	std::vector<u_int8_t> ChangeToNumbers(const std::vector<std::string>& ipAddressParts);
+	IpAddress ChangeToNumbers(const std::vector<std::string>& ipAddressParts);
+	bool IsCorrectAddress(const IpAddress& ipAddress) const;
 private:
-	std::list<std::vector<u_int8_t>> m_ipAddressList;
+	IpAddressList m_ipAddressList;
 	std::map<u_int8_t, u_int8_t> m_FilterParameters;
-	std::list<std::vector<u_int8_t>> m_FilteredIpAddressList;
+	IpAddressList m_FilteredIpAddressList;
 };
 
 }//IpFiltration

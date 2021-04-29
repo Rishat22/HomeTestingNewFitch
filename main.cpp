@@ -7,7 +7,7 @@
 using namespace std;
 using namespace IpFiltration;
 
-void PrintAddressList(const std::list<std::vector<u_int8_t>>& ipAddressList)
+void PrintAddressList(const IpAddressList& ipAddressList)
 {
 	std::cout << std::endl;
 	for(const auto& ipAddress : ipAddressList)

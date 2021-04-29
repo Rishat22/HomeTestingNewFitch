@@ -14,7 +14,8 @@ bool IpFilter::AddIpAddress(const std::string& ipAddressWithOtherData)
 		return false;
 	}
 	const auto ipAddressNumParts = ChangeToNumbers(Split(substringsSet.at(0), '.'));
-	m_ipAddressList.push_back(ipAddressNumParts);
+	if(IsCorrectAddress(ipAddressNumParts))
+		m_ipAddressList.push_back(ipAddressNumParts);
 	return true;
 }
 
@@ -37,9 +38,9 @@ std::vector<std::string> IpFilter::Split(const std::string& str, char delimiter)
 	return substringsSet;
 }
 
-std::vector<u_int8_t> IpFilter::ChangeToNumbers(const std::vector<std::string>& ipAddressParts)
+IpAddress IpFilter::ChangeToNumbers(const std::vector<std::string>& ipAddressParts)
 {
-	std::vector<u_int8_t> ipAddressNumParts;
+	IpAddress ipAddressNumParts;
 	for(const auto& ipAddressPart : ipAddressParts)
 	{
 		ipAddressNumParts.push_back(stoi(ipAddressPart));
@@ -47,13 +48,13 @@ std::vector<u_int8_t> IpFilter::ChangeToNumbers(const std::vector<std::string>& 
 	return ipAddressNumParts;
 }
 
-std::list<std::vector<u_int8_t>> IpFilter::GetOriginalList() const
+IpAddressList IpFilter::GetOriginalList() const
 {
 	return m_ipAddressList;
 }
 
 
-std::list<std::vector<u_int8_t>> IpFilter::GetFilteredList() const
+IpAddressList IpFilter::GetFilteredList() const
 {
 	return m_FilteredIpAddressList;
 }
@@ -113,24 +114,16 @@ void IpFilter::ClearFilterParameters()
 
 void IpFilter::SortAddresses()
 {
-	m_ipAddressList.sort([]( const std::vector<u_int8_t>& firstAddress, const std::vector<u_int8_t>& secondAddress)
+	m_ipAddressList.sort(std::greater<IpAddress>());
+}
+
+bool IpFilter::IsCorrectAddress(const IpAddress& ipAddress) const
+{
+	if(ipAddress.size() != ADDRESS_PARTS_SIZE)
 	{
-		if(firstAddress.size() != ADDRESS_PARTS_SIZE || secondAddress.size() != ADDRESS_PARTS_SIZE)
-		{
-			return true;
-		}
-		for(size_t ipAddressPartIndex = 0; ipAddressPartIndex < ADDRESS_PARTS_SIZE; ++ipAddressPartIndex)
-		{
-			const auto ipFirstAddressPart = firstAddress[ipAddressPartIndex];
-			const auto ipSecondAddressPart = secondAddress[ipAddressPartIndex];
-			if(ipFirstAddressPart == ipSecondAddressPart)
-			{
-				continue;
-			}
-			return ipFirstAddressPart > ipSecondAddressPart;
-		}
-		return true;
-	});
+		return false;
+	}
+	return true;
 }
 
 } //namespace IpFiltration
