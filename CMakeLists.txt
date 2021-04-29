@@ -20,16 +20,16 @@ set(project_sources
     )
 add_library(lesson ${project_sources} )
 
-add_executable(test_version test_version.cpp)
+add_executable(unit_tests unit_tests.cpp)
 
-set_target_properties(lesson_cli lesson test_version PROPERTIES
+set_target_properties(lesson_cli lesson unit_tests PROPERTIES
     CXX_STANDARD 14
     CXX_STANDARD_REQUIRED ON
 )
 target_include_directories(lesson
     PRIVATE "${CMAKE_BINARY_DIR}"
 )
-set_target_properties(test_version PROPERTIES
+set_target_properties(unit_tests PROPERTIES
     COMPILE_DEFINITIONS BOOST_TEST_DYN_LINK
     INCLUDE_DIRECTORIES ${Boost_INCLUDE_DIR}
 )
@@ -37,7 +37,7 @@ set_target_properties(test_version PROPERTIES
 target_link_libraries(lesson_cli PRIVATE
     lesson
 )
-target_link_libraries(test_version
+target_link_libraries(unit_tests
     ${Boost_LIBRARIES}
     lesson
 )
@@ -49,7 +49,7 @@ if (MSVC)
     target_compile_options(lesson PRIVATE
         /W4
     )
-    target_compile_options(test_version PRIVATE
+    target_compile_options(unit_tests PRIVATE
         /W4
     )
 else ()
@@ -59,7 +59,7 @@ else ()
     target_compile_options(lesson PRIVATE
         -Wall -Wextra -pedantic -Werror
     )
-    target_compile_options(test_version PRIVATE
+    target_compile_options(unit_tests PRIVATE
         -Wall -Wextra -pedantic -Werror
     )
 endif()
@@ -79,4 +79,4 @@ include(CPack)
 
 enable_testing()
 
-add_test(test_version test_version)
+add_test(unit_tests unit_tests)
