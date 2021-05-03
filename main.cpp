@@ -40,6 +40,19 @@ void PrintContainer(Vector<T>& vector)
 	std::cout  << "-------------------------------------------------------\n";
 }
 
+void PintAssociativeContainer(std::map< int,	float,
+							  std::less<int>,
+							  logging_allocator<
+								  std::pair< int, float	>
+							  >>& map)
+{
+	for(auto item : map)
+	{
+		std::cout << item.first << " " << item.second << std::endl;
+	}
+	std::cout  << "-------------------------------------------------------\n";
+}
+
 //template<>
 //void PrintVector(const Vector<Vector3>& vector)
 //{
@@ -51,22 +64,24 @@ void PrintContainer(Vector<T>& vector)
 //}
 
 int main(int, char *[]) {
-//	auto m = std::map<
-//		int,	float,
-//		std::less<int>,
-//		logging_allocator<
-//			std::pair<const int, float	>
-//		>
-//	>{};
+	auto m = std::map<
+		int,	float,
+		std::less<int>,
+		logging_allocator<
+			std::pair< int, float	>
+		>
+	>{logging_allocator<std::pair< int, float	>>(10)};
 
-//	for (int i = 0; i < 5; ++i) {
-//		m[i] = static_cast<float>(i);
-//	}
+	for (int i = 0; i < 5; ++i) {
+		m[i] = static_cast<float>(i);
+	}
+
+	PintAssociativeContainer(m);
 
 	Vector<int> my_vector;
-	my_vector.PushBack(100);
-	my_vector.PushBack(200);
-	my_vector.PushBack(300);
+	for (int i = 0; i < 5; ++i) {
+		my_vector.PushBack(i);
+	}
 
 	PrintContainer(my_vector);
 
