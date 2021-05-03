@@ -65,8 +65,8 @@ int main(int, char *[]) {
 
 	Vector<int> my_vector;
 	my_vector.PushBack(100);
-	my_vector.PushBack(100);
-	my_vector.PushBack(100);
+	my_vector.PushBack(200);
+	my_vector.PushBack(300);
 
 	PrintVector(my_vector);
 
