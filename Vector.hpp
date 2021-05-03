@@ -1,15 +1,70 @@
 #ifndef VECTOR_H
 #define VECTOR_H
 #include <stddef.h>
+#include <algorithm>
 #include <utility>
+
+template<typename lDataType>
+class VecIterator
+{
+public:
+
+	using iterator_category = std::random_access_iterator_tag;
+	using value_type = lDataType;
+	using difference_type = std::ptrdiff_t;
+	using pointer = lDataType*;
+	using reference = lDataType&;
+
+public:
+
+	VecIterator(lDataType* ptr = nullptr){m_Ptr = ptr;}
+	VecIterator(const VecIterator<lDataType>& rawIterator) = default;
+	~VecIterator() = default;
+
+	VecIterator<lDataType>&                  operator=(const VecIterator<lDataType>& rawIterator) = default;
+	VecIterator<lDataType>&                  operator=(lDataType* ptr){m_Ptr = ptr;return (*this);}
+
+	operator                                    bool()const
+	{
+		if(m_Ptr)
+			return true;
+		else
+			return false;
+	}
+
+	bool                                        operator==(const VecIterator<lDataType>& rawIterator)const{return (m_Ptr == rawIterator.getConstPtr());}
+	bool                                        operator!=(const VecIterator<lDataType>& rawIterator)const{return (m_Ptr != rawIterator.getConstPtr());}
+
+	VecIterator<lDataType>&                  operator+=(const difference_type& movement){m_Ptr += movement;return (*this);}
+	VecIterator<lDataType>&                  operator-=(const difference_type& movement){m_Ptr -= movement;return (*this);}
+	VecIterator<lDataType>&                  operator++(){++m_Ptr;return (*this);}
+	VecIterator<lDataType>&                  operator--(){--m_Ptr;return (*this);}
+	VecIterator<lDataType>                   operator++(int){auto temp(*this);++m_Ptr;return temp;}
+	VecIterator<lDataType>                   operator--(int){auto temp(*this);--m_Ptr;return temp;}
+	VecIterator<lDataType>                   operator+(const difference_type& movement){auto oldPtr = m_Ptr;m_Ptr+=movement;auto temp(*this);m_Ptr = oldPtr;return temp;}
+	VecIterator<lDataType>                   operator-(const difference_type& movement){auto oldPtr = m_Ptr;m_Ptr-=movement;auto temp(*this);m_Ptr = oldPtr;return temp;}
+
+	difference_type                             operator-(const VecIterator<lDataType>& rawIterator){return std::distance(rawIterator.getPtr(),this->getPtr());}
+
+	lDataType&                                 operator*(){return *m_Ptr;}
+	const lDataType&                           operator*()const{return *m_Ptr;}
+	lDataType*                                 operator->(){return m_Ptr;}
+
+	lDataType*                                 getPtr()const{return m_Ptr;}
+	const lDataType*                           getConstPtr()const{return m_Ptr;}
+
+protected:
+
+	lDataType*                                 m_Ptr;
+};
 
 template <typename T>
 class Vector
 {
-	using iterator = Vector<T>;
-	using const_iterator = Vector<const T>;
-	using reverse_iterator =  Vector<T>;
-	using const_reverse_iterator =  Vector<const T>;
+	using iterator = VecIterator<T>;
+	using const_iterator = VecIterator<const T>;
+	using reverse_iterator =  VecIterator<T>;
+	using const_reverse_iterator =  VecIterator<const T>;
 
 public:
 	Vector()
@@ -31,10 +86,6 @@ public:
 	iterator			end() { return iterator(&m_Data[m_Size]); }
 	const_iterator	cbegin(){ return const_iterator(&m_Data[0]);}
 	const_iterator	cend(){ return const_iterator(&m_Data[m_Size]);}
-	reverse_iterator	rbegin(){ return reverse_iterator(&m_Data[m_Size - 1]);}
-	reverse_iterator	rend(){ return reverse_iterator(&m_Data[-1]);}
-	const_reverse_iterator	crbegin(){ return const_reverse_iterator(&m_Data[m_Size - 1]);}
-	const_reverse_iterator	crend(){ return const_reverse_iterator(&m_Data[-1]);}
 
 private:
 	void ReAlloc(const size_t newCapacity);

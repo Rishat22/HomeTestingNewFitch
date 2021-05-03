@@ -31,11 +31,11 @@ using namespace std;
 //};
 
 template<typename T>
-void PrintVector(const Vector<T>& vector)
+void PrintContainer(Vector<T>& vector)
 {
-	for(size_t i = 0; i < vector.Size(); i++)
+	for(auto item : vector)
 	{
-		std::cout << vector[i] << std::endl;
+		std::cout << item << std::endl;
 	}
 	std::cout  << "-------------------------------------------------------\n";
 }
@@ -68,7 +68,7 @@ int main(int, char *[]) {
 	my_vector.PushBack(200);
 	my_vector.PushBack(300);
 
-	PrintVector(my_vector);
+	PrintContainer(my_vector);
 
 	return 0;
 }
