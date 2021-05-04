@@ -82,10 +82,10 @@ public:
 	bool Empty() const;
 
 	/* Iterators */
-	iterator			begin() { return iterator(&m_Data[0]); }
-	iterator			end() { return iterator(&m_Data[m_Size]); }
-	const_iterator	cbegin(){ return const_iterator(&m_Data[0]);}
-	const_iterator	cend(){ return const_iterator(&m_Data[m_Size]);}
+	iterator			begin() const { return iterator(&m_Data[0]); }
+	iterator			end() const { return iterator(&m_Data[m_Size]); }
+	const_iterator	cbegin() const { return const_iterator(&m_Data[0]);}
+	const_iterator	cend() const { return const_iterator(&m_Data[m_Size]);}
 
 private:
 	void ReAlloc(const size_t newCapacity);
