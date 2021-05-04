@@ -1,16 +1,16 @@
 cmake_minimum_required(VERSION 3.2)
 
 if(DEFINED ENV{GITHUB_RUN_NUMBER})
-    project(Lesson1 VERSION 0.0.$ENV{GITHUB_RUN_NUMBER})
+    project(TestGitActions VERSION 0.0.$ENV{GITHUB_RUN_NUMBER})
 else()
-    project(Lesson1)
+    project(TestGitActions)
 endif()
 
 find_package(Boost COMPONENTS unit_test_framework REQUIRED)
 
 configure_file(version.h.in version.h)
 
-add_executable(lesson_cli
+add_executable(TestGitActions_cli
     main.cpp
 )
 
@@ -18,15 +18,15 @@ set(project_sources
     lib.cpp
     ip_filter.cpp
     )
-add_library(lesson ${project_sources} )
+add_library(TestGitActions ${project_sources} )
 
 add_executable(unit_tests unit_tests.cpp)
 
-set_target_properties(lesson_cli lesson unit_tests PROPERTIES
+set_target_properties(TestGitActions_cli TestGitActions unit_tests PROPERTIES
     CXX_STANDARD 14
     CXX_STANDARD_REQUIRED ON
 )
-target_include_directories(lesson
+target_include_directories(TestGitActions
     PRIVATE "${CMAKE_BINARY_DIR}"
 )
 set_target_properties(unit_tests PROPERTIES
@@ -34,29 +34,29 @@ set_target_properties(unit_tests PROPERTIES
     INCLUDE_DIRECTORIES ${Boost_INCLUDE_DIR}
 )
 
-target_link_libraries(lesson_cli PRIVATE
-    lesson
+target_link_libraries(TestGitActions_cli PRIVATE
+    TestGitActions
 )
 target_link_libraries(unit_tests
     ${Boost_LIBRARIES}
-    lesson
+    TestGitActions
 )
 
 if (MSVC)
-    target_compile_options(lesson_cli PRIVATE
+    target_compile_options(TestGitActions_cli PRIVATE
         /W4
     )
-    target_compile_options(lesson PRIVATE
+    target_compile_options(TestGitActions PRIVATE
         /W4
     )
     target_compile_options(unit_tests PRIVATE
         /W4
     )
 else ()
-    target_compile_options(lesson_cli PRIVATE
+    target_compile_options(TestGitActions_cli PRIVATE
         -Wall -Wextra -pedantic -Werror
     )
-    target_compile_options(lesson PRIVATE
+    target_compile_options(TestGitActions PRIVATE
         -Wall -Wextra -pedantic -Werror
     )
     target_compile_options(unit_tests PRIVATE
@@ -66,7 +66,7 @@ endif()
 
 
 
-install(TARGETS lesson_cli RUNTIME DESTINATION bin)
+install(TARGETS TestGitActions_cli RUNTIME DESTINATION bin)
 
 set(CPACK_GENERATOR DEB)
 set(CPACK_PACKAGE_VERSION_MAJOR "${PROJECT_VERSION_MAJOR}")
