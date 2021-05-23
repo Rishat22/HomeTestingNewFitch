@@ -119,11 +119,7 @@ void IpFilter::SortAddresses()
 
 bool IpFilter::IsCorrectAddress(const IpAddress& ipAddress) const
 {
-	if(ipAddress.size() != ADDRESS_PARTS_SIZE)
-	{
-		return false;
-	}
-	return true;
+	return ipAddress.size() == ADDRESS_PARTS_SIZE;
 }
 
 } //namespace IpFiltration
